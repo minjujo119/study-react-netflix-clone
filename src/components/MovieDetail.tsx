@@ -38,20 +38,22 @@ interface IProps {
 }
 // styles
 const Dimmed = styled(motion.div)`
+z-index: 99;
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   height: 100%;
+  padding-top: 48px;
 `;
 const DetailBox = styled(motion.div)`
   position: relative;
-  overflow-y: auto;
+  overflow-x: hidden;
   width: 80vw;
-  height: 80vh;
+  min-height: 80vh;
   background-color: ${(props) => props.theme.bgColor};
   border-radius: 12px;
   color: white;
@@ -77,27 +79,31 @@ const DetailInfo = styled.div`
     font-size: 48px;
     color: ${(props) => props.theme.txtColor};
   }
-
   h2 + p {
+    font-size: 14px;
     margin-top: 12px;
   }
-  dl {
-    margin-top:36px;
-    dt {
-      display: block;
-      margin-top: 12px;
-      font-weight: 700;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 24px;
+
+    h3 {
+      font-size: 14px;
     }
-    dd {
-      display: block;
-      margin-top: 8px;
+    h3 + span {
+      font-size: 14px;
+      margin-top: 12px;
     }
   }
 `;
 const ExitBtn = styled(motion.button)`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: 12px;
+  right: 12px;
   width: 36px;
   height: 36px;
   padding: 4px;
@@ -117,7 +123,9 @@ const MovieDetail = ({ movieID, setMovieID }: IProps) => {
   const { isLoading, data } = useQuery<IDetail>(["MovieDetail", movieID], () =>
     getMovie(movieID)
   );
-
+  const formattedBudget = data?.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formattedRuntime = data && `${Math.floor(data.runtime / 60)}hr ${data.runtime % 60}min`
+  
   return (
     <Dimmed
       variants={modalMotion}
@@ -131,12 +139,24 @@ const MovieDetail = ({ movieID, setMovieID }: IProps) => {
           <DetailInfo>
             <h2>{data?.title}</h2>
             <p>{data?.overview}</p>
-            <dl>
-              <dt>Release date</dt>
-              <dd>{data?.release_date}</dd>
-              <dt>Popularity</dt>
-              <dd>{data?.popularity}</dd>
-            </dl>
+            <ul>
+              <li>
+                <h3>Release date</h3>
+                <span>{data?.release_date}</span>
+              </li>
+              <li>
+                <h3>Popularity</h3>
+                <span>{data?.popularity}</span>
+              </li>
+              <li>
+                <h3>Budget</h3>
+                <span>{`$${formattedBudget}`}</span>
+              </li>
+              <li>
+                <h3>Runtime</h3>
+                <span>{formattedRuntime}</span>
+              </li>
+            </ul>
           </DetailInfo>
           <ExitBtn onClick={() => setMovieID(null)} whileHover={{ scale: 1.1 }}>
             <svg fill="currentColor" viewBox="0 0 24 24" strokeWidth="2">

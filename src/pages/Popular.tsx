@@ -37,9 +37,9 @@ const PopularList = styled.ul`
   place-items: center;
   gap: 24px;
   width: 80%;
-  min-width:400px;
-  max-width: 1480px;
-  padding-top: 24px;
+  min-width: 400px;
+  max-width: 1200px;
+  padding-top: 48px;
   margin: 0 auto;
 `;
 const MovieItem = styled(motion.div)`
@@ -54,29 +54,30 @@ const MovieItem = styled(motion.div)`
   }
 `;
 
-
 const Popular = () => {
   const { isLoading, data } = useQuery<IPopular>(["Popular"], getPopular);
   const [movieID, setMovieID] = useState<number | null>(null);
 
-  return !isLoading &&(
-    <>
-      <PopularList>
-        {data?.results.map((movie) => (
-          <MovieItem
-            key={movie.id}
-            layoutId={`${movie.id}`}
-            onClick={() => setMovieID(movie.id)}
-            whileHover={{scale:1.1}}
-          >
-            <img src={`${makePosterPath(movie.poster_path)}`} alt="" />
-          </MovieItem>
-        ))}
-      </PopularList>
-      <AnimatePresence>
-        {movieID && <MovieDetail movieID={movieID} setMovieID={setMovieID} />}
-      </AnimatePresence>
-    </>
+  return (
+    !isLoading && (
+      <>
+        <PopularList>
+          {data?.results.map((movie) => (
+            <MovieItem
+              key={movie.id}
+              layoutId={`${movie.id}`}
+              whileHover={{ scale: 1.1 }}
+              onClick={() => setMovieID(movie.id)}
+            >
+              <img src={`${makePosterPath(movie.poster_path)}`} alt="" />
+            </MovieItem>
+          ))}
+        </PopularList>
+        <AnimatePresence>
+          {movieID && <MovieDetail movieID={movieID} setMovieID={setMovieID} />}
+        </AnimatePresence>
+      </>
+    )
   );
 };
 
