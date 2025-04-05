@@ -35,9 +35,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,p,table,th,td,form,fieldset,legend,
   input::placeholder{font-size:14px;line-height:20px;color:rgba(0,0,0,0.38)}
   input::-webkit-input-placeholder{font-size:14px;line-height:20px;color:rgba(0,0,0,0.38)}
   input:-ms-input-placeholder{font-size:14px;line-height:20px;color:rgba(0,0,0,0.38)}
-  ::-webkit-scrollbar{width:5px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb {border-radius:10px;background:rgba(0,0,0,0.2)}
+  ::-webkit-scrollbar{display:none}
   .skip{height:0}
   .skip a{display:block;position:absolute;left:0;top:-100px;width:100%;text-align:center}
   .skip a:focus, .skip a:active{position:absolute;top:0;z-index:210;padding:10px 0;background:#000;font-weight:bold;color:#fff;font-size:20px;text-decoration:none}

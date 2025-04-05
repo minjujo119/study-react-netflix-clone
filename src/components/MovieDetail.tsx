@@ -44,16 +44,17 @@ z-index: 99;
   left: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   height: 100%;
-  padding-top: 48px;
 `;
 const DetailBox = styled(motion.div)`
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
   width: 80vw;
-  min-height: 80vh;
+  max-width: 700px;
+  max-height: 90vh;
   background-color: ${(props) => props.theme.bgColor};
   border-radius: 12px;
   color: white;
@@ -75,12 +76,13 @@ const DetailInfo = styled.div`
   box-sizing: border-box;
 
   h2 {
-    font-weight: 900;
+    font-weight: 700;
     font-size: 48px;
     color: ${(props) => props.theme.txtColor};
   }
   h2 + p {
     font-size: 14px;
+    font-weight: 100;
     margin-top: 12px;
   }
   ul {
@@ -89,13 +91,15 @@ const DetailInfo = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     gap: 20px;
-    margin-top: 24px;
+    margin-top: 36px;
 
     h3 {
       font-size: 14px;
+      font-weight: 400;
     }
     h3 + span {
       font-size: 14px;
+      font-weight: 100;
       margin-top: 12px;
     }
   }
@@ -135,7 +139,7 @@ const MovieDetail = ({ movieID, setMovieID }: IProps) => {
     >
       {!isLoading && (
         <DetailBox layoutId={`${movieID}`}>
-          <img src={`${makeBgPath(`${data?.backdrop_path}`)}`} alt="" />
+          <img src={`${makeBgPath(`${data?.backdrop_path}`)}`} />
           <DetailInfo>
             <h2>{data?.title}</h2>
             <p>{data?.overview}</p>

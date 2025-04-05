@@ -11,12 +11,10 @@ const Wrap = styled.div`
 
 function App() {
   return (
-    <>
-      <Wrap>
-        <Header />
-        <Outlet />
-      </Wrap>
-    </>
+    <Wrap>
+      <Header />
+      <Outlet />
+    </Wrap>
   );
 }
 

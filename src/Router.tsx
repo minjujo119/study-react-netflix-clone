@@ -3,7 +3,6 @@ import App from "./App";
 import Popular from "./pages/Popular";
 import ComingSoon from "./pages/ComingSoon";
 import NowPlaying from "./pages/NowPlaying";
-import MovieDetail from "./components/MovieDetail"
 const Router = createBrowserRouter([
   {
     path: "",
@@ -12,10 +11,6 @@ const Router = createBrowserRouter([
       {
         path:"/",
         element: <Popular />,
-        children: [{
-          path:":movieID",
-          element:<MovieDetail/>
-        }]
       },
       {
         path:"/coming-soon",

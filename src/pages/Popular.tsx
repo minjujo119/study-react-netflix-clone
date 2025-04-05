@@ -4,41 +4,17 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "motion/react";
 import { getPopular, makePosterPath } from "../data/api";
 import MovieDetail from "../components/MovieDetail";
-
-// interface
-interface IResults {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-interface IPopular {
-  page: number;
-  results: IResults[];
-  total_pages: number;
-  total_results: number;
-}
+import {IMovies} from "../data/interfaces"
 
 // styles
-const PopularList = styled.ul`
+const MovieList = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fill, 180px);
   justify-content: center;
   place-items: center;
   gap: 24px;
-  width: 80%;
   min-width: 400px;
-  max-width: 1200px;
+  max-width: 1000px;
   padding-top: 48px;
   margin: 0 auto;
 `;
@@ -55,13 +31,13 @@ const MovieItem = styled(motion.div)`
 `;
 
 const Popular = () => {
-  const { isLoading, data } = useQuery<IPopular>(["Popular"], getPopular);
+  const { isLoading, data } = useQuery<IMovies>(["Popular"], getPopular);
   const [movieID, setMovieID] = useState<number | null>(null);
 
   return (
     !isLoading && (
       <>
-        <PopularList>
+        <MovieList>
           {data?.results.map((movie) => (
             <MovieItem
               key={movie.id}
@@ -72,7 +48,7 @@ const Popular = () => {
               <img src={`${makePosterPath(movie.poster_path)}`} alt="" />
             </MovieItem>
           ))}
-        </PopularList>
+        </MovieList>
         <AnimatePresence>
           {movieID && <MovieDetail movieID={movieID} setMovieID={setMovieID} />}
         </AnimatePresence>
