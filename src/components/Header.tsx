@@ -13,7 +13,7 @@ const HeaderEl = styled.header`
   min-height: 60px;
   padding: 24px 0;
   margin: 0 auto;
-  box-sizing:border-box;
+  box-sizing: border-box;
 `;
 const TabList = styled(motion.nav)`
   display: flex;
@@ -46,7 +46,7 @@ const SmoothTab = styled(motion.span)`
   background-color: ${(props) => props.theme.pointColor};
 `;
 const Title = styled.h1`
-  font-size: 32px;
+  font-size: 36px;
   color: ${(props) => props.theme.pointColor};
 `;
 
@@ -65,7 +65,10 @@ const Header = () => {
   return (
     <HeaderEl>
       <Link to={"/"}>
-        <Title>MJflix</Title>
+        {/* 타이틀 클릭 시 메뉴 탭도 처음으로 돌아가는 효과 */}
+        <Title onClick={() => setSelectedTab(`${linkContent[0].text}`)}>
+          MJflix
+        </Title>
       </Link>
       <TabList>
         {linkContent.map((tab) => {

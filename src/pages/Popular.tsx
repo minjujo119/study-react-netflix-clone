@@ -1,59 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import styled from "styled-components";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { getPopular, makePosterPath } from "../data/api";
+import { IMovies } from "../data/movieList.interfaces";
+import { MovieList, MovieItem } from "../data/movieList.style";
+import { fadeInVariants } from "../data/movieList.motion";
 import MovieDetail from "../components/MovieDetail";
-import {IMovies} from "../data/interfaces"
-
-// styles
-const MovieList = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 180px);
-  justify-content: center;
-  place-items: center;
-  gap: 24px;
-  min-width: 400px;
-  max-width: 1000px;
-  padding-top: 48px;
-  margin: 0 auto;
-`;
-const MovieItem = styled(motion.div)`
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  border-radius: 12px;
-  cursor: pointer;
-
-  img {
-    width: 100%;
-  }
-`;
 
 const Popular = () => {
   const { isLoading, data } = useQuery<IMovies>(["Popular"], getPopular);
   const [movieID, setMovieID] = useState<number | null>(null);
+  const [isModal, setIsModal] = useState(false);
+
+  // 모달창 띄울 때 바디 스크롤 막기
+  useEffect(() => {
+    if (isModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isModal]);
 
   return (
-    !isLoading && (
-      <>
+    <>
+      {!isLoading && (
         <MovieList>
-          {data?.results.map((movie) => (
+          {data?.results.map((movie, index) => (
             <MovieItem
               key={movie.id}
+              variants={fadeInVariants}
+              initial="initial"
+              animate="animate"
+              custom={index}
               layoutId={`${movie.id}`}
               whileHover={{ scale: 1.1 }}
-              onClick={() => setMovieID(movie.id)}
+              onClick={() => {
+                setIsModal(true);
+                setMovieID(movie.id);
+              }}
             >
-              <img src={`${makePosterPath(movie.poster_path)}`} alt="" />
+              <img src={`${makePosterPath(movie.poster_path)}`} />
             </MovieItem>
           ))}
         </MovieList>
-        <AnimatePresence>
-          {movieID && <MovieDetail movieID={movieID} setMovieID={setMovieID} />}
-        </AnimatePresence>
-      </>
-    )
+      )}
+      <AnimatePresence>
+        {movieID && (
+          <MovieDetail
+            movieID={movieID}
+            setMovieID={setMovieID}
+            setIsModal={setIsModal}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
